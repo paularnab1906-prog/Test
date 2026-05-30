@@ -1,0 +1,21 @@
+id: crash_zoom
+label: "Crash Zoom"
+category: camera-motion
+capability: image_to_video
+credit_cost: 12
+target:
+  primary:
+    provider: fal
+    model: "kling-video/v1.6/pro"
+  fallback:
+    provider: replicate
+    model: "minimax/video-01"
+defaults:
+  duration_s: 5
+  aspect_ratio: "9:16"
+params:
+  camera_motion: "zoom_in_fast"
+prompt_suffix: ", rapid crash zoom, cinematic, dynamic motion blur"
+allow_override:
+  - duration_s
+  - aspect_ratio

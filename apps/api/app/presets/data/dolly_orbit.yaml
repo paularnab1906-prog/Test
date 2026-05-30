@@ -1,0 +1,21 @@
+id: dolly_orbit
+label: "Dolly Orbit"
+category: camera-motion
+capability: image_to_video
+credit_cost: 14
+target:
+  primary:
+    provider: fal
+    model: "kling-video/v1.6/pro"
+  fallback:
+    provider: replicate
+    model: "minimax/video-01"
+defaults:
+  duration_s: 5
+  aspect_ratio: "16:9"
+params:
+  camera_motion: "orbit_left"
+prompt_suffix: ", smooth dolly orbit around subject, cinematic depth, shallow focus"
+allow_override:
+  - duration_s
+  - aspect_ratio

@@ -3,19 +3,22 @@
 Phased plan to go from empty repo to a working Higgsfield-style MVP and beyond.
 Each phase is shippable and de-risks the next. Estimates assume a small team.
 
-## Phase 0 — Foundations (scaffold)
-- [ ] Monorepo: `apps/web` (Next.js + TS), `apps/api` (FastAPI), `packages/shared`.
-- [ ] `docker-compose` for Postgres + Redis + object storage (MinIO locally).
-- [ ] DB migrations (Alembic), base schema from Architecture §4.
-- [ ] Auth (login/signup), session → backend JWT.
+## Phase 0 — Foundations (scaffold)  ✅ in progress
+- [x] Monorepo: `apps/web` (Next.js + TS), `apps/api` (FastAPI).
+- [x] `docker-compose` for Postgres + Redis + object storage (MinIO locally).
+- [x] Base schema from Architecture §4 (SQLAlchemy models; dev auto-create).
+- [x] Phase-0 dev-user auth stub (real OIDC deferred).
+- [ ] Alembic migrations (replace dev auto-create before prod).
 - [ ] CI: lint, typecheck, test on push.
 
 ## Phase 1 — One real generation, end to end (the critical proof)
-- [ ] Provider adapter interface + **one** adapter (fal.ai recommended).
-- [ ] `POST /v1/generations` → queue → worker → provider → store result.
-- [ ] Async job lifecycle: queued/running/succeeded/failed + SSE updates.
-- [ ] Minimal Studio UI: prompt + one model → video player result.
-- [ ] Copy provider outputs into our object storage + thumbnails.
+- [x] Provider adapter interface + fal.ai adapter (stub mode until key added).
+- [x] `POST /v1/generations` → queue (Arq) → worker → provider → store result.
+- [x] Async job lifecycle: queued/running/succeeded/failed.
+- [x] Minimal Studio UI: preset + prompt → polled status → video player.
+- [x] Copy provider outputs into our object storage.
+- [ ] Replace polling with SSE/WebSocket push.
+- [ ] Implement the real (non-stub) fal HTTP path once a key is available.
 - **Exit criterion:** a user can type a prompt and get a video back, reliably.
 
 ## Phase 2 — Presets / effects + image-to-video
