@@ -138,7 +138,29 @@ class GenerationProvider(Protocol):
 
 Adapters: `FalAdapter`, `ReplicateAdapter`, `RunwayAdapter`, `KlingAdapter`, …
 A **router** chooses an adapter per request based on the preset's target model,
-availability, and cost, with optional failover to an equivalent model.
+availability, and cost, with **failover to an equivalent model**. Failover is
+implemented: the worker walks the preset's `primary → fallback` target chain
+(e.g. fal Kling → Replicate MiniMax) and uses the first that succeeds.
+
+**Video models** are reached through these adapters — Kling, MiniMax/Hailuo,
+Wan, LTX-Video, Hunyuan, Runway, etc. — depending on which the provider hosts.
+We do not run the models; we route to whoever serves them best/cheapest.
+
+### 3.4a LLM Layer (OpenRouter) — text, not media
+A separate abstraction from the media providers, for **text** tasks:
+prompt enhancement, auto-captioning, idea generation, and (later) text-based
+safety pre-screening. **OpenRouter** is the gateway — one OpenAI-compatible API
+in front of many LLMs, so we can swap text models without code changes.
+
+```python
+# app/llm/  — distinct from app/providers/ (media)
+await llm.enhance_prompt("a fox in a city", capability="image_to_video")
+```
+
+Important boundary: **OpenRouter does not generate video or images.** All media
+generation routes through the media providers in §3.4 (fal, Replicate, …). Mixing
+these up is the most common architectural mistake here. Adapter runs in stub mode
+without `OPENROUTER_API_KEY`.
 
 ### 3.5 Preset / Effects Engine
 The product's signature layer. A preset is **declarative config**, not code:

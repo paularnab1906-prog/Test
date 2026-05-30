@@ -12,7 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app import presets
+from app import llm, presets
 from app.auth import get_current_user
 from app.db import get_session
 from app.models import Job, JobStatus
@@ -34,8 +34,13 @@ async def create_generation(
 
     user = await get_current_user(session)
 
+    # Optionally enrich the prompt via an LLM (OpenRouter) before generating.
+    prompt = body.prompt
+    if body.enhance_prompt:
+        prompt = await llm.enhance_prompt(prompt, preset["capability"])
+
     # Resolve preset -> normalized request -> provider.
-    req = presets.build_request(preset, body.prompt, body.image_url, body.params)
+    req = presets.build_request(preset, prompt, body.image_url, body.params)
     provider_name = presets.provider_for(preset)
     provider = get_provider(provider_name)
 

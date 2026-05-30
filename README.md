@@ -19,7 +19,8 @@ platform owns the product experience without owning GPUs or model weights.
 | Async jobs   | Celery (or Arq) + Redis                             |
 | Database     | PostgreSQL                                          |
 | Object store | S3-compatible (AWS S3 or Cloudflare R2) + CDN       |
-| AI models    | Hosted provider APIs via an adapter layer           |
+| AI media     | Hosted provider APIs (fal, Replicate, …) via adapters|
+| AI text/LLM  | OpenRouter (prompt enhancement, captioning)          |
 | Billing      | Stripe (subscriptions + credit packs)               |
 
 ## What this platform is — and isn't

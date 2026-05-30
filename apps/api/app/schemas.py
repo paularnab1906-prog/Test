@@ -20,8 +20,19 @@ class GenerationCreate(BaseModel):
     preset_id: str
     prompt: str
     image_url: str | None = None
+    # Run the prompt through an LLM (OpenRouter) to enrich it before generation.
+    enhance_prompt: bool = False
     # User overrides, validated against the preset's allowed ranges.
     params: dict = {}
+
+
+class PromptEnhanceRequest(BaseModel):
+    prompt: str
+    capability: str = "text_to_video"
+
+
+class PromptEnhanceResponse(BaseModel):
+    prompt: str
 
 
 class AssetOut(BaseModel):

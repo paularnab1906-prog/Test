@@ -56,3 +56,12 @@ def build_request(preset: dict, prompt: str, image_url: str | None, overrides: d
 
 def provider_for(preset: dict) -> str:
     return preset["target"]["primary"]["provider"]
+
+
+def targets_for(preset: dict) -> list[dict]:
+    """Ordered list of {provider, model} to try: primary first, then fallback."""
+    target = preset["target"]
+    chain = [target["primary"]]
+    if "fallback" in target:
+        chain.append(target["fallback"])
+    return chain

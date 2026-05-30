@@ -22,8 +22,13 @@ class Settings(BaseSettings):
     s3_region: str = "us-east-1"
     s3_public_base_url: str = "http://localhost:9000/lumina-media"
 
-    # Providers — blank key => adapter runs in stub/mock mode.
+    # Media providers — blank key => adapter runs in stub/mock mode.
     fal_api_key: str = ""
+    replicate_api_token: str = ""
+
+    # LLM provider (OpenRouter) for text tasks like prompt enhancement.
+    openrouter_api_key: str = ""
+    openrouter_model: str = "openai/gpt-4o-mini"
 
     @property
     def is_dev(self) -> bool:

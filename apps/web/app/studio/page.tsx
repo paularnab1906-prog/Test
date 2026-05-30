@@ -14,6 +14,7 @@ export default function Studio() {
   const [presetId, setPresetId] = useState("");
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [enhance, setEnhance] = useState(false);
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState("");
 
@@ -43,7 +44,14 @@ export default function Studio() {
   async function submit() {
     setError("");
     try {
-      setJob(await createGeneration({ preset_id: presetId, prompt, image_url: imageUrl || undefined }));
+      setJob(
+        await createGeneration({
+          preset_id: presetId,
+          prompt,
+          image_url: imageUrl || undefined,
+          enhance_prompt: enhance,
+        }),
+      );
     } catch (e) {
       setError(String(e));
     }
@@ -88,6 +96,11 @@ export default function Studio() {
       <label style={{ display: "block", marginTop: 16 }}>
         Image URL (for image-to-video presets)
         <input style={field} value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+      </label>
+
+      <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16 }}>
+        <input type="checkbox" checked={enhance} onChange={(e) => setEnhance(e.target.checked)} />
+        Enhance prompt with AI (OpenRouter)
       </label>
 
       <button

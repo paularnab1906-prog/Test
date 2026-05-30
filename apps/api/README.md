@@ -19,9 +19,12 @@ uvicorn app.main:app --reload         # -> http://localhost:8000/docs
 arq app.worker.WorkerSettings
 ```
 
-With no `FAL_API_KEY` set, the fal adapter runs in **stub mode**: generations
+With no provider keys set, the adapters run in **stub mode**: generations
 complete with a placeholder video so you can exercise the full pipeline without
-spending money.
+spending money. The keys that unlock real calls:
+- `FAL_API_KEY`, `REPLICATE_API_TOKEN` — media (video/image) providers.
+- `OPENROUTER_API_KEY` — LLM layer (prompt enhancement). OpenRouter is **text
+  only**; it never generates video/images.
 
 ## Try it
 
@@ -29,10 +32,15 @@ spending money.
 # list presets
 curl localhost:8000/v1/presets
 
-# start a generation
+# enhance a prompt via the LLM layer (OpenRouter)
+curl -X POST localhost:8000/v1/prompt/enhance \
+  -H 'content-type: application/json' \
+  -d '{"prompt":"a fox in a city","capability":"image_to_video"}'
+
+# start a generation (optionally auto-enhance the prompt first)
 curl -X POST localhost:8000/v1/generations \
   -H 'content-type: application/json' \
-  -d '{"preset_id":"crash_zoom","prompt":"a fox running through neon city","image_url":"https://example.com/fox.jpg"}'
+  -d '{"preset_id":"crash_zoom","prompt":"a fox running through neon city","image_url":"https://example.com/fox.jpg","enhance_prompt":true}'
 
 # poll status (use the id from the response)
 curl localhost:8000/v1/generations/<job_id>

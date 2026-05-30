@@ -8,10 +8,12 @@ from app.providers.base import (
     ProviderStatus,
 )
 from app.providers.fal import FalAdapter
+from app.providers.replicate import ReplicateAdapter
 
 # Registry: provider name -> adapter instance. Router selects from here.
 _REGISTRY: dict[str, GenerationProvider] = {
     "fal": FalAdapter(),
+    "replicate": ReplicateAdapter(),
 }
 
 

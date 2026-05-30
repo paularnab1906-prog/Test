@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.db import init_models
-from app.routers import generations, health, presets
+from app.routers import generations, health, presets, prompt
 
 
 @asynccontextmanager
@@ -34,3 +34,4 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(presets.router)
 app.include_router(generations.router)
+app.include_router(prompt.router)
