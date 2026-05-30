@@ -14,7 +14,8 @@ export default function Studio() {
   const [presetId, setPresetId] = useState("");
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [enhance, setEnhance] = useState(false);
+  const [enhance, setEnhance] = useState(true);
+  const [examples, setExamples] = useState("");
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState("");
 
@@ -50,6 +51,10 @@ export default function Studio() {
           prompt,
           image_url: imageUrl || undefined,
           enhance_prompt: enhance,
+          examples: examples
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean),
         }),
       );
     } catch (e) {
@@ -100,8 +105,20 @@ export default function Studio() {
 
       <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16 }}>
         <input type="checkbox" checked={enhance} onChange={(e) => setEnhance(e.target.checked)} />
-        Enhance prompt with AI (OpenRouter)
+        Let the Prompt Director imagine the full scene
       </label>
+
+      {enhance && (
+        <label style={{ display: "block", marginTop: 12 }}>
+          Style examples (optional, one per line) — the director will follow your taste
+          <textarea
+            style={{ ...field, minHeight: 60 }}
+            value={examples}
+            onChange={(e) => setExamples(e.target.value)}
+            placeholder={"moody noir, harsh chiaroscuro, smoky backlight\nwarm pastel, soft bokeh, dreamy"}
+          />
+        </label>
+      )}
 
       <button
         onClick={submit}

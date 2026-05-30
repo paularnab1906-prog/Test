@@ -146,21 +146,42 @@ implemented: the worker walks the preset's `primary → fallback` target chain
 Wan, LTX-Video, Hunyuan, Runway, etc. — depending on which the provider hosts.
 We do not run the models; we route to whoever serves them best/cheapest.
 
-### 3.4a LLM Layer (OpenRouter) — text, not media
-A separate abstraction from the media providers, for **text** tasks:
-prompt enhancement, auto-captioning, idea generation, and (later) text-based
-safety pre-screening. **OpenRouter** is the gateway — one OpenAI-compatible API
-in front of many LLMs, so we can swap text models without code changes.
+### 3.4a LLM Layer (OpenRouter) + Prompt Director — text, not media
+A separate abstraction from the media providers, for **text** tasks. **OpenRouter**
+is the transport — one OpenAI-compatible API in front of many LLMs (`app/llm/openrouter.py`).
+
+On top of it sits the **Prompt Director** (`app/llm/director.py`) — the system that
+makes a vague prompt produce a great result:
+
+- **Imagines the scene.** When the user under-describes, the director commits to
+  specific choices — subject, setting, time of day, lighting, lens/camera, mood,
+  palette, composition — instead of generating something generic.
+- **Follows the user's examples.** It few-shots on two sources: (1) explicit
+  example prompts the user passes, and (2) the user's **own recent successful
+  generations** for that capability (pulled from the DB). Output matches the
+  user's taste over time.
+- **Capability-aware detail.** Video prompts get camera movement + what unfolds;
+  image prompts get composition + framing.
+- **Graceful degradation.** With no `OPENROUTER_API_KEY`, or if the LLM call
+  fails, a local heuristic still returns a detailed, style-folded prompt — a
+  generation is never blocked by enhancement.
 
 ```python
 # app/llm/  — distinct from app/providers/ (media)
-await llm.enhance_prompt("a fox in a city", capability="image_to_video")
+await llm.direct_prompt(
+    "a lonely lighthouse",
+    capability="image_to_video",
+    category="camera-motion",
+    examples=[*user_examples, *recent_successful_prompts],
+)
 ```
+
+Flow: `POST /v1/generations {enhance_prompt: true}` runs the director before
+preset resolution; `POST /v1/prompt/enhance` previews the result (before/after).
 
 Important boundary: **OpenRouter does not generate video or images.** All media
 generation routes through the media providers in §3.4 (fal, Replicate, …). Mixing
-these up is the most common architectural mistake here. Adapter runs in stub mode
-without `OPENROUTER_API_KEY`.
+these up is the most common architectural mistake here.
 
 ### 3.5 Preset / Effects Engine
 The product's signature layer. A preset is **declarative config**, not code:

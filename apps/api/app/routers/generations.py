@@ -34,10 +34,16 @@ async def create_generation(
 
     user = await get_current_user(session)
 
-    # Optionally enrich the prompt via an LLM (OpenRouter) before generating.
+    # Optionally run the idea through the Prompt Director before generating.
+    # It imagines missing scene detail and follows the user's style — both the
+    # explicit examples they passed and their own recent successful prompts.
     prompt = body.prompt
     if body.enhance_prompt:
-        prompt = await llm.enhance_prompt(prompt, preset["capability"])
+        history = await _recent_prompts(session, user.id, preset["capability"])
+        examples = [*body.examples, *history]
+        prompt = await llm.direct_prompt(
+            prompt, preset["capability"], preset.get("category", ""), examples
+        )
 
     # Resolve preset -> normalized request -> provider.
     req = presets.build_request(preset, prompt, body.image_url, body.params)
@@ -91,6 +97,27 @@ async def list_generations(
         .limit(50)
     )
     return [JobOut.model_validate(j) for j in result.scalars().all()]
+
+
+async def _recent_prompts(session: AsyncSession, user_id: str, capability: str) -> list[str]:
+    """The user's recent successful prompts for this capability — style examples
+    so the director learns what the user likes."""
+    result = await session.execute(
+        select(Job)
+        .where(
+            Job.user_id == user_id,
+            Job.status == JobStatus.succeeded,
+            Job.capability == capability,
+        )
+        .order_by(Job.created_at.desc())
+        .limit(3)
+    )
+    prompts = []
+    for job in result.scalars().all():
+        p = (job.normalized_request or {}).get("prompt")
+        if p:
+            prompts.append(p)
+    return prompts
 
 
 async def _load(session: AsyncSession, job_id: str) -> Job | None:

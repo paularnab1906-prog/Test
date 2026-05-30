@@ -41,6 +41,7 @@ export async function createGeneration(input: {
   prompt: string;
   image_url?: string;
   enhance_prompt?: boolean;
+  examples?: string[];
 }): Promise<Job> {
   const r = await fetch(`${BASE}/v1/generations`, {
     method: "POST",

@@ -20,8 +20,11 @@ class GenerationCreate(BaseModel):
     preset_id: str
     prompt: str
     image_url: str | None = None
-    # Run the prompt through an LLM (OpenRouter) to enrich it before generation.
+    # Run the idea through the Prompt Director before generating. When true, a
+    # vague prompt is expanded into a detailed, style-matched scene.
     enhance_prompt: bool = False
+    # Optional example prompts the director should follow (the user's style).
+    examples: list[str] = []
     # User overrides, validated against the preset's allowed ranges.
     params: dict = {}
 
@@ -29,9 +32,12 @@ class GenerationCreate(BaseModel):
 class PromptEnhanceRequest(BaseModel):
     prompt: str
     capability: str = "text_to_video"
+    category: str = ""
+    examples: list[str] = []
 
 
 class PromptEnhanceResponse(BaseModel):
+    original: str
     prompt: str
 
 
