@@ -127,15 +127,24 @@ export default function Studio() {
             Job <code>{job.id.slice(0, 8)}</code> — <strong>{job.status}</strong>
           </div>
           {job.error_code && <div style={{ color: "#ff6b6b" }}>{job.error_code}</div>}
-          {job.assets.map((a) => (
-            <video
-              key={a.id}
-              src={a.cdn_url}
-              poster={a.thumbnail_url ?? undefined}
-              controls
-              style={{ width: "100%", marginTop: 12, borderRadius: 8 }}
-            />
-          ))}
+          {job.assets.map((a) =>
+            a.kind === "image" ? (
+              <img
+                key={a.id}
+                src={a.cdn_url}
+                alt="generated"
+                style={{ width: "100%", marginTop: 12, borderRadius: 8 }}
+              />
+            ) : (
+              <video
+                key={a.id}
+                src={a.cdn_url}
+                poster={a.thumbnail_url ?? undefined}
+                controls
+                style={{ width: "100%", marginTop: 12, borderRadius: 8 }}
+              />
+            ),
+          )}
         </div>
       )}
     </div>

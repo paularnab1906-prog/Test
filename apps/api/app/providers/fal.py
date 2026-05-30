@@ -20,9 +20,10 @@ from app.providers.base import (
     ProviderStatus,
 )
 
-# A tiny public sample video used only in stub mode.
+# Tiny public samples used only in stub mode.
 _STUB_VIDEO = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
 _STUB_THUMB = "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg"
+_STUB_IMAGE = "https://picsum.photos/seed/lumina-fal/768/1024"
 
 
 class FalAdapter:
@@ -50,10 +51,13 @@ class FalAdapter:
 
     async def poll(self, ref: str) -> ProviderStatus:
         if ref.startswith("stub-"):
-            # Pretend generation took a moment, then succeed.
+            # Pretend generation took a moment, then succeed. Return an image or a
+            # video depending on what was requested.
             await asyncio.sleep(0)
-            return ProviderStatus(
-                state=ProviderState.succeeded,
-                results=[ProviderResult(kind="video", url=_STUB_VIDEO, thumbnail_url=_STUB_THUMB)],
-            )
+            req = self._stub_jobs.get(ref)
+            if req is not None and req.capability.endswith("image"):
+                result = ProviderResult(kind="image", url=_STUB_IMAGE, thumbnail_url=_STUB_IMAGE)
+            else:
+                result = ProviderResult(kind="video", url=_STUB_VIDEO, thumbnail_url=_STUB_THUMB)
+            return ProviderStatus(state=ProviderState.succeeded, results=[result])
         raise NotImplementedError("real fal poll() — implement with httpx + FAL_API_KEY")

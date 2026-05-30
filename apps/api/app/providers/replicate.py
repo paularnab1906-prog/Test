@@ -18,6 +18,7 @@ from app.providers.base import (
 
 _STUB_VIDEO = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
 _STUB_THUMB = "https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg"
+_STUB_IMAGE = "https://picsum.photos/seed/lumina-rep/768/1024"
 
 
 class ReplicateAdapter:
@@ -45,8 +46,10 @@ class ReplicateAdapter:
     async def poll(self, ref: str) -> ProviderStatus:
         if ref.startswith("stub-"):
             await asyncio.sleep(0)
-            return ProviderStatus(
-                state=ProviderState.succeeded,
-                results=[ProviderResult(kind="video", url=_STUB_VIDEO, thumbnail_url=_STUB_THUMB)],
-            )
+            req = self._stub_jobs.get(ref)
+            if req is not None and req.capability.endswith("image"):
+                result = ProviderResult(kind="image", url=_STUB_IMAGE, thumbnail_url=_STUB_IMAGE)
+            else:
+                result = ProviderResult(kind="video", url=_STUB_VIDEO, thumbnail_url=_STUB_THUMB)
+            return ProviderStatus(state=ProviderState.succeeded, results=[result])
         raise NotImplementedError("real replicate poll() — implement with httpx + token")

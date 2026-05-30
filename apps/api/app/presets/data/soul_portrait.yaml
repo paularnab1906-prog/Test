@@ -1,0 +1,19 @@
+id: soul_portrait
+label: "Soul Portrait"
+category: image
+capability: text_to_image
+credit_cost: 4
+target:
+  primary:
+    provider: fal
+    model: "fal-ai/flux/dev"
+  fallback:
+    provider: replicate
+    model: "black-forest-labs/flux-schnell"
+defaults:
+  aspect_ratio: "3:4"
+  num_images: 1
+prompt_suffix: ", photoreal portrait, soft studio lighting, 85mm, skin detail, editorial"
+allow_override:
+  - aspect_ratio
+  - num_images
