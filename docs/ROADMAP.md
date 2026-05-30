@@ -17,8 +17,10 @@ Each phase is shippable and de-risks the next. Estimates assume a small team.
 - [x] Async job lifecycle: queued/running/succeeded/failed.
 - [x] Minimal Studio UI: preset + prompt → polled status → video player.
 - [x] Copy provider outputs into our object storage.
+- [x] Real (non-stub) fal + Replicate HTTP paths (submit/poll/parse); stub
+      remains the no-key fallback.
+- [x] All three capabilities have presets (text→image, image→video, text→video).
 - [ ] Replace polling with SSE/WebSocket push.
-- [ ] Implement the real (non-stub) fal HTTP path once a key is available.
 - **Exit criterion:** a user can type a prompt and get a video back, reliably.
 
 ## Phase 2 — Presets / effects + image-to-video

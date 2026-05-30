@@ -1,0 +1,21 @@
+id: establishing_shot
+label: "Establishing Shot"
+category: camera-motion
+capability: text_to_video
+credit_cost: 16
+target:
+  primary:
+    provider: fal
+    model: "fal-ai/kling-video/v1.6/pro/text-to-video"
+  fallback:
+    provider: replicate
+    model: "minimax/video-01"
+defaults:
+  duration_s: 5
+  aspect_ratio: "16:9"
+params:
+  camera_motion: "slow_push_in"
+prompt_suffix: ", sweeping cinematic establishing shot, wide angle, slow push in, volumetric light, epic scale"
+allow_override:
+  - duration_s
+  - aspect_ratio
