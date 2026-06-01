@@ -15,6 +15,7 @@ export default function Studio() {
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [enhance, setEnhance] = useState(true);
+  const [draft, setDraft] = useState(true);
   const [examples, setExamples] = useState("");
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState("");
@@ -51,6 +52,7 @@ export default function Studio() {
           prompt,
           image_url: imageUrl || undefined,
           enhance_prompt: enhance,
+          draft,
           examples: examples
             .split("\n")
             .map((s) => s.trim())
@@ -106,6 +108,11 @@ export default function Studio() {
       <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16 }}>
         <input type="checkbox" checked={enhance} onChange={(e) => setEnhance(e.target.checked)} />
         Let the Prompt Director imagine the full scene
+      </label>
+
+      <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+        <input type="checkbox" checked={draft} onChange={(e) => setDraft(e.target.checked)} />
+        Draft mode (fast, low-res, cheaper — for iterating)
       </label>
 
       {enhance && (

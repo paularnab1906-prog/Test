@@ -13,8 +13,10 @@ target:
 defaults:
   duration_s: 5
   aspect_ratio: "9:16"
+  resolution: "720p"
 params:
   camera_motion: "zoom_in_fast"
+  camerafixed: false            # allow camera movement (Seedance --camerafixed)
 prompt_suffix: ", rapid crash zoom, cinematic, dynamic motion blur"
 allow_override:
   - duration_s

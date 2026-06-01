@@ -13,8 +13,10 @@ target:
 defaults:
   duration_s: 5
   aspect_ratio: "9:16"
+  resolution: "720p"
 params:
   camera_motion: "handheld_tracking"
+  camerafixed: false
 prompt_suffix: ", high-energy action, fast handheld tracking, motion blur, dynamic camera, dramatic lighting"
 allow_override:
   - duration_s

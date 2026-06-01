@@ -62,6 +62,37 @@ def test_byteplus_output_parsing():
     assert bp._parse_output({}) == []
 
 
+def test_byteplus_prompt_manual_commands():
+    from app.providers.byteplus import _build_prompt
+    from app.providers.base import NormalizedRequest
+
+    out = _build_prompt(
+        NormalizedRequest(
+            capability="image_to_video",
+            prompt="a fox runs",
+            params={"aspect_ratio": "9:16", "duration_s": 5, "resolution": "720p", "camerafixed": False},
+        )
+    )
+    assert "--resolution 720p" in out and "--ratio 9:16" in out
+    assert "--duration 5" in out and "--camerafixed false" in out
+
+
+def test_byteplus_draft_and_clamp():
+    from app.providers.byteplus import _build_prompt
+    from app.providers.base import NormalizedRequest
+
+    out = _build_prompt(
+        NormalizedRequest(
+            capability="text_to_video",
+            prompt="epic",
+            params={"duration_s": 20, "resolution": "1080p", "draft": True, "seed": 42},
+        )
+    )
+    assert "--resolution 480p" in out  # draft forces low-res
+    assert "--duration 12" in out      # clamps to max 12
+    assert "--seed 42" in out
+
+
 def test_openrouter_image_output_parsing():
     from app.providers import openrouter_image as oi
 

@@ -47,6 +47,11 @@ async def create_generation(
 
     # Resolve preset -> normalized request -> provider.
     req = presets.build_request(preset, prompt, body.image_url, body.params)
+    # Generation-time controls that aren't preset overrides.
+    if body.draft:
+        req.params["draft"] = True
+    if body.seed is not None:
+        req.params["seed"] = body.seed
     provider_name = presets.provider_for(preset)
     provider = get_provider(provider_name)
 

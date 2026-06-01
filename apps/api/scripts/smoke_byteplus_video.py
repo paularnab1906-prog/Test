@@ -4,8 +4,10 @@ Run on a network-enabled machine (the cloud sandbox blocks bytepluses.com):
 
     cd apps/api
     python scripts/smoke_byteplus_video.py "a lonely lighthouse at dusk"
+    python scripts/smoke_byteplus_video.py "..." --draft     # fast 480p iteration
 
-Saves the result to apps/api/out.mp4. Stdlib only. Reads from env or the
+Saves the result to apps/api/out.mp4. Append Seedance prompt-manual commands
+directly in the prompt too, e.g. "... --resolution 720p --ratio 16:9 --duration 5". Stdlib only. Reads from env or the
 gitignored apps/api/.env:
     BYTEPLUS_API_KEY=...                 (required)
     BYTEPLUS_VIDEO_MODEL=seedance-1-5-pro-251215
@@ -53,7 +55,12 @@ def _req(url, key, method="GET", body=None):
 
 
 def main() -> None:
-    prompt = sys.argv[1] if len(sys.argv) > 1 else "a lonely lighthouse at dusk, cinematic, slow push in"
+    args = sys.argv[1:]
+    draft = "--draft" in args
+    args = [a for a in args if a != "--draft"]
+    prompt = args[0] if args else "a lonely lighthouse at dusk, cinematic, slow push in"
+    if draft:
+        prompt += " --resolution 480p"
     key, model, base = _load()
     print(f"model: {model}\nprompt: {prompt}\nsubmitting...")
 

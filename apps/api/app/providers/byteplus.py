@@ -48,20 +48,15 @@ class BytePlusAdapter:
             return ref
 
         s = get_settings()
-        content: list[dict] = [{"type": "text", "text": req.prompt}]
+        # Seedance takes parameters as `--` commands appended to the prompt text
+        # (the "prompt manual"), not as top-level JSON fields.
+        content: list[dict] = [{"type": "text", "text": _build_prompt(req)}]
         if req.image_url:
             # image-to-video: condition on the user's image as the first frame.
             content.append(
                 {"type": "image_url", "image_url": {"url": req.image_url}, "role": "first_frame"}
             )
         body: dict = {"model": req.model or s.byteplus_video_model, "content": content}
-        p = req.params
-        if "aspect_ratio" in p:
-            body["ratio"] = p["aspect_ratio"]
-        if "duration_s" in p:
-            body["duration"] = int(p["duration_s"])
-        if "resolution" in p:
-            body["resolution"] = p["resolution"]
 
         async with httpx.AsyncClient(timeout=60) as http:
             resp = await http.post(
@@ -97,6 +92,37 @@ class BytePlusAdapter:
             msg = err.get("message") if isinstance(err, dict) else err
             return ProviderStatus(state=ProviderState.failed, error=msg or f"byteplus: {status}")
         return ProviderStatus(state=ProviderState.running)
+
+
+def _build_prompt(req: NormalizedRequest) -> str:
+    """Append Seedance prompt-manual `--` commands to the text prompt.
+
+    Supported (per the Seedance 1.5 Pro prompt guide):
+      --resolution 480p|720p|1080p   --ratio 1:1|3:4|4:3|16:9|9:16|21:9
+      --duration 2..12               --camerafixed true|false
+      --seed <int>
+
+    Draft mode: there isn't a publicly-documented `--draft` flag, so we approximate
+    the playground's "Draft mode" with the fast/cheap 480p profile. If your console's
+    "Copy sample code" reveals a real draft field, we can send it verbatim instead.
+    """
+    p = req.params or {}
+    text = req.prompt.strip()
+    cmds: list[str] = []
+
+    resolution = "480p" if p.get("draft") else p.get("resolution")
+    if resolution:
+        cmds.append(f"--resolution {resolution}")
+    if p.get("aspect_ratio"):
+        cmds.append(f"--ratio {p['aspect_ratio']}")
+    if p.get("duration_s") is not None:
+        cmds.append(f"--duration {max(2, min(12, int(p['duration_s'])))}")
+    if "camerafixed" in p:
+        cmds.append(f"--camerafixed {'true' if p['camerafixed'] else 'false'}")
+    if p.get("seed") is not None:
+        cmds.append(f"--seed {int(p['seed'])}")
+
+    return f"{text} {' '.join(cmds)}".strip() if cmds else text
 
 
 def _headers() -> dict:

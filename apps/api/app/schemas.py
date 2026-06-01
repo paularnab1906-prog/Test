@@ -25,6 +25,10 @@ class GenerationCreate(BaseModel):
     enhance_prompt: bool = False
     # Optional example prompts the director should follow (the user's style).
     examples: list[str] = []
+    # Draft mode: fast/cheap low-res generation for iteration (BytePlus/Seedance).
+    draft: bool = False
+    # Optional seed for reproducible generations.
+    seed: int | None = None
     # User overrides, validated against the preset's allowed ranges.
     params: dict = {}
 
