@@ -14,7 +14,12 @@ class Base(DeclarativeBase):
 
 
 _settings = get_settings()
-engine = create_async_engine(_settings.database_url, echo=_settings.is_dev, future=True)
+# For SQLite (local-dev default), allow a busy timeout so concurrent inline-job
+# writes and request reads don't trip "database is locked".
+_connect_args = {"timeout": 30} if _settings.database_url.startswith("sqlite") else {}
+engine = create_async_engine(
+    _settings.database_url, echo=_settings.is_dev, future=True, connect_args=_connect_args
+)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 

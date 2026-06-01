@@ -11,10 +11,22 @@ class Settings(BaseSettings):
 
     env: str = "development"
 
-    database_url: str = "postgresql+asyncpg://lumina:lumina@localhost:5432/lumina"
+    # Local-dev defaults: SQLite + local file storage + inline job execution, so
+    # the whole app runs with just Python + an OpenRouter key (no Docker).
+    # For production set these to Postgres / Redis / S3 (see docker-compose.yml).
+    database_url: str = "sqlite+aiosqlite:///./lumina.db"
     redis_url: str = "redis://localhost:6379/0"
+    api_base_url: str = "http://localhost:8000"
 
-    # Object storage (S3-compatible)
+    # "inline" runs generation in a background task (no Redis/worker needed);
+    # "arq" enqueues to the Redis-backed worker for production.
+    job_runner: str = "inline"
+
+    # "local" writes media to a folder served at /media; "s3" uses object storage.
+    storage_backend: str = "local"
+    media_dir: str = "./media"
+
+    # Object storage (S3-compatible) — used when storage_backend == "s3"
     s3_endpoint_url: str = "http://localhost:9000"
     s3_access_key: str = "minioadmin"
     s3_secret_key: str = "minioadmin"
