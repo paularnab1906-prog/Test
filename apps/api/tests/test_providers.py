@@ -53,6 +53,15 @@ def test_openrouter_video_output_parsing():
     assert ov._parse_video_output({}) == []
 
 
+def test_byteplus_output_parsing():
+    from app.providers import byteplus as bp
+
+    ok = bp._parse_output({"status": "succeeded", "content": {"video_url": "https://x/v.mp4"}})
+    assert len(ok) == 1 and ok[0].kind == "video"
+    assert bp._parse_output({"content": {}}) == []
+    assert bp._parse_output({}) == []
+
+
 def test_openrouter_image_output_parsing():
     from app.providers import openrouter_image as oi
 

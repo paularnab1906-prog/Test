@@ -7,6 +7,7 @@ from app.providers.base import (
     ProviderResult,
     ProviderStatus,
 )
+from app.providers.byteplus import BytePlusAdapter
 from app.providers.fal import FalAdapter
 from app.providers.openrouter_image import OpenRouterImageAdapter
 from app.providers.openrouter_video import OpenRouterVideoAdapter
@@ -18,6 +19,7 @@ _REGISTRY: dict[str, GenerationProvider] = {
     "replicate": ReplicateAdapter(),
     "openrouter": OpenRouterImageAdapter(),
     "openrouter_video": OpenRouterVideoAdapter(),
+    "byteplus": BytePlusAdapter(),
 }
 
 

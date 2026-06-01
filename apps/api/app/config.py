@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     fal_api_key: str = ""
     replicate_api_token: str = ""
 
+    # BytePlus ModelArk (ByteDance Ark) — native Seedance video, free credits.
+    byteplus_api_key: str = ""
+    byteplus_base_url: str = "https://ark.ap-southeast.bytepluses.com/api/v3"
+    byteplus_video_model: str = "seedance-1-5-pro-251215"
+
     # LLM provider (OpenRouter) for text tasks like prompt enhancement.
     openrouter_api_key: str = ""
     openrouter_model: str = "openai/gpt-4o-mini"

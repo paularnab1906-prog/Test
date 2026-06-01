@@ -5,11 +5,11 @@ capability: image_to_video
 credit_cost: 14
 target:
   primary:
-    provider: openrouter_video
-    model: ""                 # empty -> uses OPENROUTER_VIDEO_MODEL
+    provider: byteplus            # native Seedance, free credits
+    model: ""                     # empty -> uses BYTEPLUS_VIDEO_MODEL
   fallback:
-    provider: fal
-    model: "kling-video/v1.6/pro"
+    provider: openrouter_video    # empty -> uses OPENROUTER_VIDEO_MODEL
+    model: ""
 defaults:
   duration_s: 5
   aspect_ratio: "16:9"
