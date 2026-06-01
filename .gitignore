@@ -25,3 +25,6 @@ yarn-error.log*
 # --- local infra ---
 .minio-data/
 pgdata/
+
+# --- smoke-test artifacts ---
+out.png

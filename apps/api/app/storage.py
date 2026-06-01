@@ -22,12 +22,32 @@ def _client():
 
 
 async def ingest_url(src_url: str, key: str, content_type: str) -> str:
-    """Download a remote asset and store it under `key`; return the public URL."""
+    """Store an asset under `key` and return its public URL.
+
+    Handles both remote http(s) URLs (fal/Replicate) and inline base64 `data:`
+    URLs (OpenRouter image output)."""
     s = get_settings()
-    async with httpx.AsyncClient(timeout=60) as http:
-        resp = await http.get(src_url)
-        resp.raise_for_status()
-        body = resp.content
+    if src_url.startswith("data:"):
+        body, ct = _decode_data_url(src_url)
+        content_type = ct or content_type
+    else:
+        async with httpx.AsyncClient(timeout=60) as http:
+            resp = await http.get(src_url)
+            resp.raise_for_status()
+            body = resp.content
 
     _client().put_object(Bucket=s.s3_bucket, Key=key, Body=body, ContentType=content_type)
     return f"{s.s3_public_base_url}/{key}"
+
+
+def _decode_data_url(data_url: str) -> tuple[bytes, str | None]:
+    """Parse `data:[<mediatype>][;base64],<data>` into (bytes, content_type)."""
+    import base64
+
+    header, _, payload = data_url[len("data:"):].partition(",")
+    content_type = header.split(";")[0] or None
+    if ";base64" in header:
+        return base64.b64decode(payload), content_type
+    from urllib.parse import unquote_to_bytes
+
+    return unquote_to_bytes(payload), content_type

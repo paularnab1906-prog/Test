@@ -20,11 +20,24 @@ arq app.worker.WorkerSettings
 ```
 
 With no provider keys set, the adapters run in **stub mode**: generations
-complete with a placeholder video so you can exercise the full pipeline without
+complete with a placeholder asset so you can exercise the full pipeline without
 spending money. The keys that unlock real calls:
-- `FAL_API_KEY`, `REPLICATE_API_TOKEN` — media (video/image) providers.
-- `OPENROUTER_API_KEY` — LLM layer (prompt enhancement). OpenRouter is **text
-  only**; it never generates video/images.
+- `OPENROUTER_API_KEY` — prompt enhancement (LLM) **and** real text→image
+  generation via an image-capable model (`OPENROUTER_IMAGE_MODEL`).
+- `FAL_API_KEY`, `REPLICATE_API_TOKEN` — video providers (and image fallback).
+
+### OpenRouter-only test mode (current setup)
+With just `OPENROUTER_API_KEY` set you can test the whole product end to end:
+- **Prompt Director** — real (confirmed working).
+- **text→image** presets (Soul Portrait, Cinematic Still) — **real images** via
+  OpenRouter; fal is the fallback once you add its key.
+- **video** presets — still **placeholder** clips. OpenRouter has no video model,
+  so real video waits for `FAL_API_KEY` / `REPLICATE_API_TOKEN`.
+
+Quick local image check (saves a PNG, no app deps):
+```bash
+python scripts/smoke_openrouter_image.py "a lonely lighthouse at dusk"
+```
 
 ## Try it
 

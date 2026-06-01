@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     # LLM provider (OpenRouter) for text tasks like prompt enhancement.
     openrouter_api_key: str = ""
     openrouter_model: str = "openai/gpt-4o-mini"
+    # Image-capable model on OpenRouter (returns images, not just text).
+    openrouter_image_model: str = "google/gemini-2.5-flash-image-preview"
 
     @property
     def is_dev(self) -> bool:

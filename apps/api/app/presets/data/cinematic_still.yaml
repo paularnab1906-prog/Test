@@ -5,11 +5,11 @@ capability: text_to_image
 credit_cost: 4
 target:
   primary:
+    provider: openrouter
+    model: "google/gemini-2.5-flash-image-preview"
+  fallback:
     provider: fal
     model: "fal-ai/flux/dev"
-  fallback:
-    provider: replicate
-    model: "black-forest-labs/flux-schnell"
 defaults:
   aspect_ratio: "16:9"
   num_images: 1
