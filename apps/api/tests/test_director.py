@@ -1,7 +1,22 @@
 """Prompt Director tests — offline imagination + style-following (no key, no network)."""
 import pytest
 
-from app.llm.director import PromptDirector
+from app.llm.director import PromptDirector, _sanitize
+
+
+def test_sanitize_strips_meta_preamble():
+    # the real leak observed from a weaker model
+    leak = "Send the prompt only.\n\nA lonely lighthouse at dusk, slow drone orbit."
+    out = _sanitize(leak)
+    assert out.startswith("A lonely lighthouse")
+    assert "Send the prompt" not in out
+
+
+def test_sanitize_preserves_legit_prompt_and_unwraps_quotes():
+    assert _sanitize('"a fox, cinematic, 35mm"') == "a fox, cinematic, 35mm"
+    legit = "A lighthouse at dusk, golden light, photoreal."
+    assert _sanitize(legit) == legit
+    assert _sanitize("Prompt: a fox in a city") == "a fox in a city"
 
 
 @pytest.mark.asyncio

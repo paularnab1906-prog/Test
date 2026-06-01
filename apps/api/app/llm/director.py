@@ -13,6 +13,7 @@ works offline (and as a deterministic fallback if the LLM call fails).
 """
 from __future__ import annotations
 
+import re
 from collections.abc import Sequence
 
 from app.llm.openrouter import OpenRouterClient
@@ -69,9 +70,10 @@ class PromptDirector:
         if not self._client.enabled:
             return self._imagine(idea, capability, category, examples)
         try:
-            return await self._client.complete(
+            raw = await self._client.complete(
                 self._build_messages(idea, capability, category, examples)
             )
+            return _sanitize(raw) or self._imagine(idea, capability, category, examples)
         except Exception:
             # Never fail a generation because enhancement failed — degrade gracefully.
             return self._imagine(idea, capability, category, examples)
@@ -111,6 +113,31 @@ class PromptDirector:
         if style:
             prompt += f", {style}"
         return prompt
+
+
+# Words that flag a short leading "meta" line a weaker model may emit before the
+# actual prompt (e.g. "Send the prompt only.", "Sure, here it is:").
+_META_WORDS = ("prompt", "output", "here", "sure", "okay", "certainly", "only", "below", "following")
+
+
+def _sanitize(text: str) -> str:
+    """Strip model chatter so only the prompt itself remains.
+
+    Conservative: we only drop a leading block when there's a longer block after
+    it, so a legitimate single-paragraph prompt is never deleted.
+    """
+    text = (text or "").strip().strip("`").strip()
+    # Remove wrapping quotes the model sometimes adds.
+    if len(text) >= 2 and text[0] in "\"'" and text[-1] == text[0]:
+        text = text[1:-1].strip()
+    # Drop a short meta first block ("Send the prompt only." etc.).
+    blocks = [b.strip() for b in re.split(r"\n\s*\n", text) if b.strip()]
+    if len(blocks) > 1 and len(blocks[0]) < 60 and any(w in blocks[0].lower() for w in _META_WORDS):
+        blocks = blocks[1:]
+    text = "\n\n".join(blocks)
+    # Strip a leading label like "Prompt:" / "Output:".
+    text = re.sub(r"^(prompt|output|scene)\s*:\s*", "", text, flags=re.I).strip()
+    return text
 
 
 def _style_hint(examples: Sequence[str]) -> str:
