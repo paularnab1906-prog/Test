@@ -5,11 +5,11 @@ capability: image_to_video
 credit_cost: 12
 target:
   primary:
+    provider: openrouter_video
+    model: ""                 # empty -> uses OPENROUTER_VIDEO_MODEL
+  fallback:
     provider: fal
     model: "kling-video/v1.6/pro"
-  fallback:
-    provider: replicate
-    model: "minimax/video-01"
 defaults:
   duration_s: 5
   aspect_ratio: "9:16"

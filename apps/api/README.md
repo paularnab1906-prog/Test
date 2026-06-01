@@ -27,16 +27,21 @@ spending money. The keys that unlock real calls:
 - `FAL_API_KEY`, `REPLICATE_API_TOKEN` — video providers (and image fallback).
 
 ### OpenRouter-only test mode (current setup)
-With just `OPENROUTER_API_KEY` set you can test the whole product end to end:
-- **Prompt Director** — real (confirmed working).
-- **text→image** presets (Soul Portrait, Cinematic Still) — **real images** via
-  OpenRouter; fal is the fallback once you add its key.
-- **video** presets — still **placeholder** clips. OpenRouter has no video model,
-  so real video waits for `FAL_API_KEY` / `REPLICATE_API_TOKEN`.
+With just `OPENROUTER_API_KEY` set you can test the **whole product** end to end —
+OpenRouter now serves text, image, AND video:
+- **Prompt Director** — real (confirmed working). `OPENROUTER_MODEL`.
+- **text→image** presets (Soul Portrait, Cinematic Still) — real images via
+  `OPENROUTER_IMAGE_MODEL`.
+- **text/image→video** presets (Crash Zoom, Establishing Shot, ...) — real clips
+  via OpenRouter's async video API (`OPENROUTER_VIDEO_MODEL`).
 
-Quick local image check (saves a PNG, no app deps):
+fal/Replicate remain wired as **fallbacks** for when you add their keys later.
+
+Quick local checks (save files, no app deps):
 ```bash
-python scripts/smoke_openrouter_image.py "a lonely lighthouse at dusk"
+python scripts/smoke_openrouter_image.py "a lonely lighthouse at dusk"   # -> out.png
+python scripts/smoke_openrouter_video.py --list                          # show video model slugs
+python scripts/smoke_openrouter_video.py "a lonely lighthouse at dusk"   # -> out.mp4
 ```
 
 ## Try it

@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     openrouter_model: str = "openai/gpt-4o-mini"
     # Image-capable model on OpenRouter (returns images, not just text).
     openrouter_image_model: str = "google/gemini-2.5-flash-image-preview"
+    # Video model on OpenRouter (async /api/v1/videos). Verify the slug against
+    # https://openrouter.ai/collections/video-models for your account.
+    openrouter_video_model: str = "google/veo-3.1"
 
     @property
     def is_dev(self) -> bool:

@@ -31,8 +31,12 @@ async def ingest_url(src_url: str, key: str, content_type: str) -> str:
         body, ct = _decode_data_url(src_url)
         content_type = ct or content_type
     else:
-        async with httpx.AsyncClient(timeout=60) as http:
-            resp = await http.get(src_url)
+        headers = {}
+        # OpenRouter's unsigned_urls point back at its API and need the token.
+        if "openrouter.ai" in src_url:
+            headers["Authorization"] = f"Bearer {s.openrouter_api_key}"
+        async with httpx.AsyncClient(timeout=120, follow_redirects=True) as http:
+            resp = await http.get(src_url, headers=headers)
             resp.raise_for_status()
             body = resp.content
 

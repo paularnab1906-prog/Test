@@ -9,6 +9,7 @@ from app.providers.base import (
 )
 from app.providers.fal import FalAdapter
 from app.providers.openrouter_image import OpenRouterImageAdapter
+from app.providers.openrouter_video import OpenRouterVideoAdapter
 from app.providers.replicate import ReplicateAdapter
 
 # Registry: provider name -> adapter instance. Router selects from here.
@@ -16,6 +17,7 @@ _REGISTRY: dict[str, GenerationProvider] = {
     "fal": FalAdapter(),
     "replicate": ReplicateAdapter(),
     "openrouter": OpenRouterImageAdapter(),
+    "openrouter_video": OpenRouterVideoAdapter(),
 }
 
 

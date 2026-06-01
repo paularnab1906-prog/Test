@@ -43,3 +43,20 @@ def test_replicate_output_parsing_handles_str_and_list():
     assert replicate._parse_replicate_output("u", "video")[0].url == "u"
     assert len(replicate._parse_replicate_output(["a", "b"], "image")) == 2
     assert replicate._parse_replicate_output(None, "image") == []
+
+
+def test_openrouter_video_output_parsing():
+    from app.providers import openrouter_video as ov
+
+    res = ov._parse_video_output({"unsigned_urls": ["https://openrouter.ai/x", "y"]})
+    assert len(res) == 2 and res[0].kind == "video"
+    assert ov._parse_video_output({}) == []
+
+
+def test_openrouter_image_output_parsing():
+    from app.providers import openrouter_image as oi
+
+    resp = {"choices": [{"message": {"images": [{"image_url": {"url": "data:image/png;base64,AA"}}]}}]}
+    res = oi._parse_image_output(resp)
+    assert len(res) == 1 and res[0].kind == "image"
+    assert oi._parse_image_output({"choices": [{"message": {}}]}) == []
