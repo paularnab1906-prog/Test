@@ -43,9 +43,10 @@ class Settings(BaseSettings):
     openrouter_model: str = "openai/gpt-4o-mini"
     # Image-capable model on OpenRouter (returns images, not just text).
     openrouter_image_model: str = "google/gemini-2.5-flash-image-preview"
-    # Video model on OpenRouter (async /api/v1/videos). Verify the slug against
-    # https://openrouter.ai/collections/video-models for your account.
-    openrouter_video_model: str = "google/veo-3.1"
+    # Video model on OpenRouter (async /api/v1/videos). Seedance 1.5 Pro supports
+    # cinematic camera control, which pairs well with our motion presets.
+    # Other slugs at https://openrouter.ai/collections/video-models
+    openrouter_video_model: str = "bytedance/seedance-1-5-pro"
 
     @property
     def is_dev(self) -> bool:

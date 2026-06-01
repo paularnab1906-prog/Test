@@ -22,9 +22,9 @@ Create `apps/api/.env` with your key:
 OPENROUTER_API_KEY=sk-or-...your-key...
 OPENROUTER_MODEL=openai/gpt-4o-mini
 OPENROUTER_IMAGE_MODEL=google/gemini-2.5-flash-image-preview
-OPENROUTER_VIDEO_MODEL=google/veo-3.1
+OPENROUTER_VIDEO_MODEL=bytedance/seedance-1-5-pro
 ```
-> Set `OPENROUTER_VIDEO_MODEL` to a real slug from
+> `bytedance/seedance-1-5-pro` is confirmed working. See other slugs with
 > `python scripts/smoke_openrouter_video.py --list`.
 
 Run it:
