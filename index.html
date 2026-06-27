@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The "Brain Game" Method That Calms Even the Most Hyperactive Dogs</title>
+  <style>
+    :root {
+      --bg:      oklch(98.5% 0.006 85);
+      --surface: oklch(100% 0.002 85);
+      --fg:      oklch(22% 0.018 70);
+      --muted:   oklch(52% 0.014 70);
+      --border:  oklch(88% 0.008 85);
+      --accent:  oklch(56% 0.14 155);
+      --accent-dark: oklch(46% 0.12 155);
+      --warm:    oklch(96% 0.012 75);
+      --warm-border: oklch(85% 0.018 75);
+      --font-display: 'Georgia', 'Iowan Old Style', 'Charter', serif;
+      --font-body:    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --max-width: 720px;
+      --radius: 14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--accent-dark); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--accent); }
+    .page { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
+
+    .hero { padding: 48px 0 32px; text-align: center; }
+    .hero__kicker {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-dark); margin-bottom: 20px;
+    }
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5.5vw, 48px);
+      line-height: 1.15; letter-spacing: -0.02em;
+      color: var(--fg); margin-bottom: 20px;
+    }
+    .hero__subtitle {
+      font-size: clamp(17px, 2.5vw, 20px);
+      line-height: 1.55; color: var(--muted);
+      max-width: 580px; margin: 0 auto 28px;
+    }
+    .hero__meta {
+      font-size: 13px; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .hero__avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent); display: inline-grid; place-items: center;
+      color: #fff; font-weight: 700; font-size: 14px; font-family: var(--font-body);
+    }
+    .hero__img {
+      width: 100%; max-width: 560px; margin: 0 auto;
+      border-radius: var(--radius); overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+    .hero__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .cta-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 16px 40px; background: var(--accent); color: #fff;
+      font-family: var(--font-body); font-size: 17px; font-weight: 600;
+      letter-spacing: 0.01em; border: none; border-radius: 999px;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.15s, transform 0.1s; line-height: 1.2;
+    }
+    .cta-btn:hover { background: var(--accent-dark); color: #fff; transform: translateY(-1px); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn--large { font-size: 19px; padding: 20px 48px; width: 100%; max-width: 420px; }
+
+    .article { padding: 40px 0 60px; }
+    .article p { margin-bottom: 20px; }
+    .article h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 4vw, 32px);
+      line-height: 1.25; letter-spacing: -0.01em;
+      margin: 48px 0 16px;
+    }
+    .article h2:first-child { margin-top: 0; }
+    .article h3 {
+      font-family: var(--font-display); font-size: 20px;
+      line-height: 1.35; margin: 36px 0 12px;
+    }
+    .article ul, .article ol { margin: 0 0 20px 24px; }
+    .article li { margin-bottom: 8px; }
+    .article strong { font-weight: 600; }
+    .article blockquote {
+      margin: 32px 0; padding: 24px 28px;
+      background: var(--warm); border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic; color: var(--fg); font-size: 17px; line-height: 1.65;
+    }
+    .article blockquote cite {
+      display: block; margin-top: 12px; font-style: normal;
+      font-size: 14px; color: var(--muted); font-weight: 500;
+    }
+
+    .divider { border: none; height: 1px; background: var(--border); margin: 48px 0; }
+
+    .highlight-box {
+      background: var(--warm); border: 1px solid var(--warm-border);
+      border-radius: var(--radius); padding: 28px 32px; margin: 36px 0;
+    }
+    .highlight-box__title {
+      font-family: var(--font-display); font-size: 20px;
+      font-weight: 700; margin-bottom: 12px; color: var(--fg);
+    }
+    .highlight-box p:last-child { margin-bottom: 0; }
+
+    .testimonials { display: grid; gap: 20px; margin: 36px 0; }
+    .testimonial {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .testimonial__stars {
+      color: oklch(72% 0.14 75); font-size: 16px;
+      letter-spacing: 2px; margin-bottom: 12px;
+    }
+    .testimonial__text { font-size: 15px; line-height: 1.65; color: var(--fg); margin-bottom: 14px; }
+    .testimonial__author {
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .testimonial__avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent); display: inline-grid; place-items: center;
+      color: #fff; font-size: 12px; font-weight: 700;
+    }
+
+    .features { display: grid; gap: 16px; margin: 28px 0 36px; }
+    .feature {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .feature__icon {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
+      background: oklch(94% 0.03 155); display: grid; place-items: center; color: var(--accent-dark);
+    }
+    .feature__icon svg { width: 22px; height: 22px; }
+    .feature__title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .feature__desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+    .lead-magnet {
+      background: linear-gradient(135deg, oklch(28% 0.04 70), oklch(22% 0.03 70));
+      color: oklch(95% 0.006 70); border-radius: calc(var(--radius) + 4px);
+      padding: 40px 32px; margin: 48px 0; text-align: center;
+    }
+    .lead-magnet__icon {
+      width: 56px; height: 56px; margin: 0 auto 16px;
+      background: rgba(255,255,255,0.1); border-radius: 50%;
+      display: grid; place-items: center;
+    }
+    .lead-magnet__icon svg { width: 28px; height: 28px; color: oklch(78% 0.12 155); }
+    .lead-magnet__title {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3.5vw, 28px);
+      line-height: 1.25; margin-bottom: 10px;
+    }
+    .lead-magnet__desc {
+      font-size: 15px; line-height: 1.6; opacity: 0.8;
+      max-width: 440px; margin: 0 auto 24px;
+    }
+    .lead-magnet__form {
+      display: flex; flex-direction: column; gap: 12px;
+      max-width: 380px; margin: 0 auto;
+    }
+    .lead-magnet__input {
+      width: 100%; padding: 14px 18px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px; background: rgba(255,255,255,0.08);
+      color: #fff; font-size: 15px; font-family: var(--font-body); outline: none;
+    }
+    .lead-magnet__input::placeholder { color: rgba(255,255,255,0.45); }
+    .lead-magnet__input:focus { border-color: oklch(78% 0.12 155); }
+    .lead-magnet__btn {
+      padding: 14px 32px; background: var(--accent); color: #fff;
+      font-size: 16px; font-weight: 600; border: none;
+      border-radius: 999px; cursor: pointer; font-family: var(--font-body);
+    }
+    .lead-magnet__btn:hover { background: var(--accent-dark); }
+    .lead-magnet__note { font-size: 12px; opacity: 0.5; margin-top: 8px; }
+
+    .faq { margin: 36px 0; }
+    .faq__title { font-family: var(--font-display); font-size: clamp(24px, 4vw, 32px); margin-bottom: 24px; }
+    .faq__item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+    .faq__q {
+      width: 100%; text-align: left; padding: 18px 20px;
+      background: var(--surface); border: none;
+      font-family: var(--font-body); font-size: 15px; font-weight: 600;
+      color: var(--fg); cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .faq__q:hover { background: var(--warm); }
+    .faq__arrow { flex-shrink: 0; width: 20px; height: 20px; transition: transform 0.2s; color: var(--muted); }
+    .faq__item.open .faq__arrow { transform: rotate(180deg); }
+    .faq__a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .faq__a-inner { padding: 0 20px 18px; font-size: 15px; line-height: 1.65; color: var(--muted); }
+    .faq__item.open .faq__a { max-height: 400px; }
+
+    .final-cta { text-align: center; padding: 56px 0 72px; }
+    .final-cta__title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4.5vw, 36px);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .final-cta__desc {
+      font-size: 17px; color: var(--muted);
+      max-width: 500px; margin: 0 auto 28px; line-height: 1.6;
+    }
+    .final-cta__guarantee {
+      font-size: 13px; color: var(--muted); margin-top: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .final-cta__guarantee svg { width: 16px; height: 16px; color: var(--accent); }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 28px 0;
+      text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8;
+    }
+    .footer a { color: var(--muted); }
+
+    @media (min-width: 600px) {
+      .testimonials { grid-template-columns: 1fr 1fr; }
+      .features { grid-template-columns: 1fr 1fr; }
+      .lead-magnet { padding: 52px 44px; }
+      .lead-magnet__form { flex-direction: row; }
+      .lead-magnet__input { flex: 1; }
+      .lead-magnet__btn { white-space: nowrap; }
+    }
+
+    /* PDF Popup */
+    #pdf-popup { transition: opacity 0.25s ease; }
+    #pdf-popup[style*="flex"] { animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    #popup-email:focus { border-color:#4a9d6c !important; }
+    #download-btn { transition: background 0.15s, transform 0.1s; }
+    #download-btn:hover { background:#3a7d56; }
+    #download-btn:active { transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+  <header class="page">
+    <div class="hero">
+      <div class="hero__kicker">Dog Training Breakthrough</div>
+      <h1 class="hero__title">The "Brain Game" Method That Calms Even the Most Hyperactive Dogs &mdash; Without Yelling or Treats-as-Bribes</h1>
+      <p class="hero__subtitle">A certified dog trainer discovered that mental stimulation &mdash; not obedience drills &mdash; is the hidden key to a calm, well-behaved dog. Here's what the research says.</p>
+      <div class="hero__meta">
+        <span class="hero__avatar">AF</span>
+        <span>By Adrienne Farricelli &middot; CPDT-KA Certified Dog Trainer</span>
+        <span>&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <div class="hero__img">
+        <img src="mqtm1nfa-ChatGPT-Image-Jun-25_-2026_-07_10_35-PM.png" alt="Golden Retriever playing brain game with muffin tin" />
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <p>If you've ever found yourself shouting "NO!" at your dog for the tenth time in an hour &mdash; only to watch them tilt their head and do it again &mdash; you're not alone. And it's not your fault.</p>
+
+      <p>The truth is, most dog behavior problems aren't about disobedience. They're about <strong>boredom</strong>. And no amount of yelling, scolding, or even traditional obedience training fixes a bored dog.</p>
+
+      <p>I learned this the hard way with my own dog, Einstein &mdash; a brilliant but endlessly energetic Border Collie mix who destroyed two couches, one door frame, and my sanity before I figured out what was really going on.</p>
+
+      <h2>Why Your Dog "Doesn't Listen" (It's Not What You Think)</h2>
+    <div style="margin: 20px 0; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3;">
+      <img src="mqtm1n6a-ChatGPT-Image-Jun-25_-2026_-07_39_50-PM.png" alt="Frustrated owner with mischievous dog" style="width:100%;height:100%;object-fit:cover;" />
+    </div><p>Dogs were bred for work. Herding, hunting, guarding, retrieving &mdash; every breed was designed to <em>do something</em> for hours every day. Modern life doesn't give them that outlet. So they create their own "jobs": barking at nothing, chewing shoes, digging holes, pulling on the leash.</p>
+
+      <p>These aren't behavior problems. They're <strong>under-stimulation problems</strong>.</p>
+
+      <div class="highlight-box">
+        <div class="highlight-box__title">The Science Is Clear</div>
+        <div style="margin: 16px 0; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3;">
+          <img src="mqtm1mz3-ChatGPT-Image-Jun-25_-2026_-07_48_49-PM.png" alt="Peaceful dog resting after mental stimulation" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <p>Studies from the University of Bristol's Anthrozoology Institute found that dogs given mental stimulation tasks showed a <strong>significant reduction</strong> in stress-related behaviors &mdash; including excessive barking, destructive chewing, and anxiety &mdash; compared to dogs given only physical exercise. A tired body doesn't calm a restless mind.</p>
+      </div>
+
+      <h2>The "Brain Game" Method That Changed Everything</h2>
+
+      <p>After Einstein's couch-destruction phase, I went back to my training roots and started applying cognitive enrichment techniques &mdash; the same mental-stimulation exercises used with working dogs and service dogs &mdash; to everyday pet dogs.</p>
+
+      <p>The results were almost immediate. Within two weeks of daily 10-minute brain game sessions, Einstein was calmer, more focused, and &mdash; for the first time &mdash; actually <em>listening</em> on walks.</p>
+
+      <blockquote>
+        "I was skeptical &mdash; I'd tried everything from prong collars to calming supplements. Nothing worked. After just three days of the brain games, my dog was a different animal. He actually came when called. I cried."
+        <cite>&mdash; Sarah M., verified buyer, Austin TX</cite>
+      </blockquote>
+
+      <p>I started teaching these techniques to my clients. Same results, every time. Hyper dogs calmed down. Anxious dogs relaxed. "Stubborn" dogs started engaging.</p>
+
+      <p>That's when I knew I had to put this into a format every dog owner could follow &mdash; not just the ones who could afford private training sessions.</p>
+
+      <hr class="divider" />
+
+      <div style="margin: 20px 0; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9;">
+      <img src="mqtm1lrr-ChatGPT-Image-Jun-25_-2026_-07_52_05-PM.png" alt="Complete dog training system overview" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <h2>Introducing: Brain Training for Dogs</h2>
+
+      <p>Brain Training for Dogs is a complete, step-by-step system that teaches you how to unlock your dog's natural intelligence through fun, game-based mental exercises. No force. No intimidation. No treats-as-bribes.</p>
+
+      <p>It's designed for everyday dog owners &mdash; no training experience needed. Each game takes just 5&ndash;10 minutes and can be done at home with zero equipment.</p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div>
+            <div class="feature__title">21 Brain Games</div>
+            <div class="feature__desc">Graduated difficulty levels from beginner to advanced &mdash; each one building your dog's focus and impulse control.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div class="feature__title">Step-by-Step Written Guide</div>
+            <div class="feature__desc">Clear instructions with illustrations so you know exactly what to do &mdash; even if you've never trained a dog before.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div>
+            <div class="feature__title">Video Demonstrations</div>
+            <div class="feature__desc">Watch real dogs learning each game &mdash; so you can see the exact technique in action before trying it yourself.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="feature__title">60-Day Money-Back Guarantee</div>
+            <div class="feature__desc">Try it risk-free. If you don't see a noticeable difference in your dog's behavior, you get a full refund. No questions asked.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin: 36px 0;">
+        <a href="#lead-magnet" class="cta-btn cta-btn--large" id="cta-main">&rarr; Get Instant Access &mdash; $47</a>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 10px;">One-time payment &middot; Instant digital delivery &middot; 60-day guarantee</p>
+      </div>
+
+      <hr class="divider" />
+
+      <h2>Real Dogs, Real Results</h2>
+
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="testimonial__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial__text">"My rescue dog, Max, was terrified of everything and would bark nonstop. After two weeks of the brain games, he's noticeably calmer and actually plays with toys now instead of destroying them."</p>
+          <div class="testimonial__author"><span class="testimonial__avatar" style="overflow:hidden; padding:0; width:30px; height:30px; border-radius:50%; display:inline-block;"><img src="mqtm1m2s-ChatGPT-Image-Jun-25_-2026_-07_49_08-PM.png" alt="James K. with his dog" style="width:100%;height:100%;object-fit:cover;" /></span><span>James K. &middot; Denver, CO</span></div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial__text">"I've spent thousands on trainers. This $47 program did more in 10 days than six months of private lessons. My Golden Retriever finally has impulse control."</p>
+          <div class="testimonial__author"><span class="testimonial__avatar" style="overflow:hidden; padding:0; width:30px; height:30px; border-radius:50%; display:inline-block;"><img src="mqtm1mqf-ChatGPT-Image-Jun-25_-2026_-07_48_56-PM.png" alt="Lisa P. with her dog" style="width:100%;height:100%;object-fit:cover;" /></span><span>Lisa P. &middot; Chicago, IL</span></div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial__text">"The 'Airplane Game' alone was worth the price. My puppy's attention span went from 3 seconds to 30 seconds. I can actually give commands now."</p>
+          <div class="testimonial__author"><span class="testimonial__avatar" style="overflow:hidden; padding:0; width:30px; height:30px; border-radius:50%; display:inline-block;"><img src="mqtm1mbn-ChatGPT-Image-Jun-25_-2026_-07_49_01-PM.png" alt="Maria R. with her dog" style="width:100%;height:100%;object-fit:cover;" /></span><span>Maria R. &middot; Phoenix, AZ</span></div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial__text">"I was about to rehome my dog because of his aggression. The brain games gave him an outlet. He's not 'fixed' but he's manageable now &mdash; and getting better every week."</p>
+          <div class="testimonial__author"><span class="testimonial__avatar">DT</span><span>David T. &middot; Atlanta, GA</span></div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="lead-magnet" id="lead-magnet">
+        <div style="width: 180px; height: 180px; margin: 0 auto 16px; border-radius: var(--radius); overflow: hidden;">
+          <img src="mqtm1lmv-ChatGPT-Image-Jun-25_-2026_-07_58_43-PM.png" alt="5 Free Brain Games guide preview" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <h2 class="lead-magnet__title">Free Download: 5 Brain Games to Calm Your Dog in 5 Minutes</h2>
+        <p class="lead-magnet__desc">Get the PDF that started it all &mdash; 5 simple mental exercises you can try today with zero equipment. Perfect for hyper, anxious, or "stubborn" dogs.</p>
+        <form class="lead-magnet__form" id="email-form" onsubmit="handleLeadSubmit(event)">
+          <input type="email" class="lead-magnet__input" id="email-input" placeholder="Enter your email address" required />
+          <button type="submit" class="lead-magnet__btn">Send Me the Free PDF &rarr;</button>
+        </form>
+        <p class="lead-magnet__note">No spam. Unsubscribe anytime. We respect your inbox.</p>
+      </div>
+
+      <div style="margin: 24px 0; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9;">
+      <img src="mqtm1lfe-ChatGPT-Image-Jun-25_-2026_-08_00_35-PM.png" alt="Gentle hand resting on sleeping dog" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <h2>Frequently Asked Questions</h2>
+
+      <div class="faq">
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)" aria-expanded="false">
+            Will this work for my dog's breed / age / size?
+            <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner">Yes. The brain games are based on cognitive principles, not physical ability. They work for puppies, senior dogs, small breeds, large breeds, and everything in between. The program includes modifications for different energy levels and attention spans.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)" aria-expanded="false">
+            I've tried training before and it didn't work. Why is this different?
+            <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner">Most training programs focus on obedience &mdash; teaching your dog to respond to commands. Brain Training for Dogs works differently: it addresses the <em>root cause</em> of bad behavior (boredom and under-stimulation) by engaging your dog's mind. When a dog is mentally engaged, obedience follows naturally.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)" aria-expanded="false">
+            How much time do I need to invest each day?
+            <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner">Just 5&ndash;10 minutes per day. Each brain game is designed to be short and fun &mdash; for both you and your dog. Most owners see noticeable improvements within the first week of consistent daily sessions.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)" aria-expanded="false">
+            What if it doesn't work for my dog?
+            <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner">Every purchase is backed by a 60-day money-back guarantee. If you don't see a real, noticeable improvement in your dog's behavior and calmness, simply email the support team for a full refund. No hoops, no hassle.</div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)" aria-expanded="false">
+            Is this just another obedience course?
+            <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner">No. This is a cognitive enrichment program. Instead of teaching your dog to "sit" or "stay," you'll be activating their problem-solving abilities, improving their focus, and giving them the mental workout they're missing. The obedience improvements are a side effect of a calmer, more engaged mind.</div></div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="final-cta">
+        <h2 class="final-cta__title">Ready to Unlock Your Dog's Full Potential?</h2>
+        <p class="final-cta__desc">Join thousands of dog owners who've transformed their relationship with their pets using simple, fun brain games &mdash; no force, no frustration, no expensive trainers.</p>
+        <a href="#lead-magnet" class="cta-btn cta-btn--large">&rarr; Get Brain Training for Dogs &mdash; $47</a>
+        <div class="final-cta__guarantee">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>60-Day Money-Back Guarantee</span>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="page">
+    <div class="footer">
+      <p>This site is not affiliated with BrainTraining4Dogs.com. This is an independent review and affiliate page.</p>
+      <p>&copy; 2026 &middot; <a href="#">Disclaimer</a> &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Contact</a></p>
+      <p style="margin-top: 8px; font-size: 11px;">As an affiliate, we earn from qualifying purchases. This does not affect the price you pay.</p>
+    </div>
+  </footer>
+
+  <!-- PDF Download Popup -->
+  <div id="pdf-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:20px; padding:48px 40px; max-width:480px; width:90%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); position:relative;">
+      <button onclick="closePdfPopup()" style="position:absolute; top:16px; right:20px; background:none; border:none; font-size:24px; cursor:pointer; color:#999;">&times;</button>
+      <div style="width:64px; height:64px; margin:0 auto 20px; background:#e8f5ee; border-radius:50%; display:grid; place-items:center;">
+        <svg style="width:28px; height:28px; color:#4a9d6c;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2 style="font-family:Georgia,ser; font-size:24px; margin-bottom:12px; color:#3b3530;">Your PDF is Ready!</h2>
+      <p style="font-size:15px; color:#7a7570; margin-bottom:28px; line-height:1.6;">Enter your email below and we'll send the PDF to your inbox too.</p>
+      <input type="email" id="popup-email" placeholder="Enter your email address" style="width:100%; padding:14px 18px; border:1.5px solid #ddd; border-radius:12px; font-size:16px; margin-bottom:12px; outline:none; font-family:inherit; box-sizing:border-box;" />
+      <button onclick="downloadPdf()" id="download-btn" style="width:100%; padding:16px; background:#4a9d6c; color:#fff; font-size:17px; font-weight:600; border:none; border-radius:12px; cursor:pointer; font-family:inherit; margin-bottom:8px;">&darr; Download PDF Now</button>
+      <p style="font-size:12px; color:#999; margin-top:8px;">No spam. Unsubscribe anytime.</p>
+      <p style="font-size:12px; color:#ccc; margin-top:12px;">To download you are agreeing to these <a href="#" style="color:#4a9d6c;">Terms & Conditions</a></p>
+    </div>
+  </div>
+
+  <script>
+    function toggleFaq(btn) {
+      var item = btn.closest('.faq__item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq__item').forEach(function(el) {
+        el.classList.remove('open');
+        el.querySelector('.faq__q').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      var email = document.getElementById('email-input').value;
+      if (email) {
+        document.getElementById('popup-email').value = email;
+        var popup = document.getElementById('pdf-popup');
+        popup.style.display = 'flex';
+        sendEmailToSysteme(email);
+      }
+    }
+
+    function closePdfPopup() {
+      document.getElementById('pdf-popup').style.display = 'none';
+    }
+
+    function downloadPdf() {
+      var email = document.getElementById('popup-email').value;
+      if (email) {
+        sendEmailToSysteme(email);
+      }
+      // Trigger PDF download - replace with your actual PDF URL
+      var link = document.createElement('a');
+      link.href = '5-Brain-Games-Calm-Your-Dog.pdf';
+      link.download = '5-Brain-Games-Calm-Your-Dog.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      // Redirect to ClickBank hoplink after download
+      setTimeout(function() {
+        window.location.href = 'https://your-clickbank-hoplink.com';
+      }, 1500);
+    }
+
+    function sendEmailToSysteme(email) {
+      var apiKey = '36ztyx4nsjj2nssdjqf1z2wn38r25u5go808nkcywujg3kv3ne9zl1303kelw0pp';
+      fetch('https://api.systeme.io/api/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-API-Key': apiKey
+        },
+        body: JSON.stringify({ email: email })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.id) {
+          fetch('https://api.systeme.io/api/contacts/' + data.id + '/tags', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-API-Key': apiKey
+            },
+            body: JSON.stringify({ tagId: 2070083 })
+          });
+        }
+      })
+      .catch(function(err) { console.log('Email save failed:', err); });
+    }
+
+    document.querySelectorAll('a[href="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    document.getElementById('pdf-popup').addEventListener('click', function(e) {
+      if (e.target === this) { closePdfPopup(); }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closePdfPopup(); }
+    });
+  </script>
+</body>
+</html>
